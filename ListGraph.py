@@ -1,6 +1,6 @@
 class Vertex:
-    def __init__(self, node):
-        self.id = node
+    def __init__(self, name):
+        self.id = name
         self.adjacent = {}
 
     def __str__(self):

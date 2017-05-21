@@ -1,8 +1,6 @@
-
 class Vertex:
     def __init__(self, name):
         self.name = name
-
 
 class Graph:
     vertices = {}
@@ -28,13 +26,19 @@ class Graph:
         else:
             return False
 
+    def __str__(self):
+        str = self.edges[0][1]
+        for edge in self.edges:
+            str += edge
+        for edgeIndex in self.edge_indices:
+            str += self.edge_indices[edgeIndex]
     # Prints edges matrix
     def print_graph(self):
-        print self.edges[0][1]
-        for edge in self.edges:
-            print edge
-        for edgeIndex in self.edge_indices:
-            print self.edge_indices[edgeIndex]
+        # print self.edges[0][1]
+        # for edge in self.edges:
+        #     print edge
+        # for edgeIndex in self.edge_indices:
+        #     print self.edge_indices[edgeIndex]
 
 
 g = Graph()

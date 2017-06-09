@@ -1,57 +1,78 @@
-#a class for a vertex object
-#it is more consistent with the list graph format but can probably be ignored for just using a string for the vertex name
-
 class Graph:
-    #set of vertices added to the graph
-    vertices = {}
+    #list of vertices in the graph NI
+    vertices = []
     #edge matrix
     edges = []
-    #indices for the edges to find it in the matrix
-    edge_indices = {}
 
     def add_vertex(self, vertex):
-        # if isinstance(vertex, Vertex) and vertex.name not in self.vertices:
-        #     self.vertices[vertex.name] = vertex
+        # if len(self.vertices_list) == 0:
+        #     # self.edges.append(0)
         #     for row in self.edges:
-        #         row.append(0)
-        #     self.edges.append([0] * (len(self.edge_indices)))
-        #     self.edge_indices[vertex.name] = len(self.edge_indices)
-        #     return True
-        if len(self.vertices) == 0:
-            # self.edges.append(0)
-            for row in self.edges:
-                row.append([0])
+        #         row.append([0])
         if isinstance(vertex, basestring) and vertex not in self.vertices:
-            self.vertices[vertex] = vertex
-
-            self.edges.append([0] * (len(self.edge_indices)))
+            self.vertices.append(vertex)
+            self.edges.append([0] * (len(self.edges)))
             for row in self.edges:
                 row.append(0)
+            self.vertices.append(vertex)
 
-            self.edge_indices[vertex] = len(self.edge_indices)
             return True
         else:
             return False
 
+    #finds the index of the vertex for the matrix
+    #replacement for the edge index dictionary
+    def find_index(self, vertex):
+        for index in range(len(self.vertices)):
+            if self.vertices[index] == vertex:
+                return index
+        return False
+
+    #adds a connection between two vertices in the graph
     def add_edge(self, vertexOne, vertexTwo, weight=1):
         if vertexOne in self.vertices and vertexTwo in self.vertices:
-            self.edges[self.edge_indices[vertexOne]][self.edge_indices[vertexTwo]] = weight
-            self.edges[self.edge_indices[vertexTwo]][self.edge_indices[vertexOne]] = weight
+            indexOne = self.find_index(vertexOne)
+            indexTwo = self.find_index(vertexTwo)
+
+            self.edges[indexOne][indexTwo] = weight
+            self.edges[indexTwo][indexOne] = weight
             return True
         else:
             return False
 
     def __str__(self):
-
-
-        string = ''
-        string = self.edge_indices.values().__str__()
+        string = ', '.join(map(str, self.vertices))
+        #make this string line up correctly
 
         string2 = '\n'
         for edgelist in self.edges:
             for edge in edgelist:
-                string2 += edge.__str__()
+                string2 += edge.__str__() + ' '
             string2 += '\n'
         return string + string2
+
+    #finds the shortest path between two vertices
+    def dijkstra(self, start, end):
+        distance = {}
+        current = start
+
+        #assigning initial distance for the vertices
+        for vertex in self.vertices:
+            #a distance of -1 means infinity
+            distance[vertex] = -1
+        distance[start] = 0
+
+        unvisited = set(self.vertices)
+        index = self.edge_indices(current)
+
+        # can't do a reverse dictionary lookup so either implementation is flawed or dictionary is flawed framework
+        # for edge in self.edges[index]:
+        #     if edge != 0:
+
+
+
+
+
+
 
 

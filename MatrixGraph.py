@@ -10,7 +10,6 @@ class Graph:
         #     for row in self.edges:
         #         row.append([0])
         if isinstance(vertex, basestring) and vertex not in self.vertices:
-            self.vertices.append(vertex)
             self.edges.append([0] * (len(self.edges)))
             for row in self.edges:
                 row.append(0)
@@ -41,19 +40,23 @@ class Graph:
             return False
 
     def __str__(self):
-        string = ', '.join(map(str, self.vertices))
+        string = '  '
+        string += ', '.join(map(str, self.vertices))
         #make this string line up correctly
 
         string2 = '\n'
+        counter = 0
         for edgelist in self.edges:
+            string2 += self.vertices[counter] + ' '
             for edge in edgelist:
                 string2 += edge.__str__() + ' '
             string2 += '\n'
+            counter += 1
         return string + string2
 
     #finds the shortest path between two vertices
     def dijkstra(self, start, end):
-        distance = {}
+        distance = []
         current = start
 
         #assigning initial distance for the vertices
@@ -63,11 +66,12 @@ class Graph:
         distance[start] = 0
 
         unvisited = set(self.vertices)
-        index = self.edge_indices(current)
+        index = self.find_index(current)
 
-        # can't do a reverse dictionary lookup so either implementation is flawed or dictionary is flawed framework
-        # for edge in self.edges[index]:
-        #     if edge != 0:
+        for edgeList in self.edges[index]:
+            for edge in edgeList:
+                if edge != 0:
+                    distance[]
 
 
 

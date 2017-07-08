@@ -1,14 +1,15 @@
+#might be better as a library for now will add CLI in the future
+#import click
+import Queue
+
 class Graph:
-    #list of vertices in the graph NI
+
+    #list of vertices in the graph WIP
     vertices = []
     #edge matrix
     edges = []
 
     def add_vertex(self, vertex):
-        # if len(self.vertices_list) == 0:
-        #     # self.edges.append(0)
-        #     for row in self.edges:
-        #         row.append([0])
         if isinstance(vertex, basestring) and vertex not in self.vertices:
             self.edges.append([0] * (len(self.edges)))
             for row in self.edges:
@@ -19,13 +20,16 @@ class Graph:
         else:
             return False
 
+    # @click.command()
+    # @click.option('--vertex', default=1, help='Number of greetings.')
+    # @click.option('--name', prompt='Your name',
+    #               help='The person to greet.')
     #finds the index of the vertex for the matrix
-    #replacement for the edge index dictionary
     def find_index(self, vertex):
         for index in range(len(self.vertices)):
             if self.vertices[index] == vertex:
                 return index
-        return False
+        return True
 
     #adds a connection between two vertices in the graph
     def add_edge(self, vertexOne, vertexTwo, weight=1):
@@ -38,6 +42,11 @@ class Graph:
             return True
         else:
             return False
+
+    def get_weight(self, vertexOne, vertexTwo):
+        indexOne = self.find_index(vertexOne)
+        indexTwo = self.find_index(vertexTwo)
+        return self.edges[indexOne][indexTwo]
 
     def __str__(self):
         string = '  '
@@ -56,25 +65,45 @@ class Graph:
 
     #finds the shortest path between two vertices
     def dijkstra(self, start, end):
-        distance = []
-        current = start
 
-        #assigning initial distance for the vertices
-        for vertex in self.vertices:
-            #a distance of -1 means infinity
-            distance[vertex] = -1
+        queue = Queue.PriorityQueue
+        distance = {}
+        current = start
+        unvisited = set(self.vertices)
+
+        currentIndex = self.find_index(current)
+        startIndex = self.find_index(start)
+        endIndex = self.find_index(end)
+
+        #initialization
+        for neighbor in self.vertices:
+
+            distance[neighbor] = -1
         distance[start] = 0
 
-        unvisited = set(self.vertices)
-        index = self.find_index(current)
+        #end this loop when the destination vertex has been visited
+        while end in unvisited:
+            # consider neighbors
+            for i in range(len(self.edges[currentIndex])):
+                weight = self.edges[currentIndex][i]
+                if weight != 0:
+                    neighbor = self.vertices[i]
+                    if distance[neighbor] == -1 or distance[neighbor] > weight:
+                        distance[neighbor] = weight
+                        queue.__reduce_ex__()
 
-        for edgeList in self.edges[index]:
-            for edge in edgeList:
-                if edge != 0:
-                    distance[]
+            #needs improvement probably too complicated
+            counter = 1
+            for item in distance:
+                if counter == 1:
+                    smallest = item
+                    current = item
+                elif distance[item] > -1 and item in unvisited and distance[item] < distance[smallest]:
+                    current = item
+                counter += 1
 
-
-
+            # mark current vertex as unvisited
+            unvisited.remove(current)
 
 
 
